@@ -13,8 +13,7 @@ class UserTransformer extends TransformerAbstract
             "id" => $user->id,
             "name" => $user->name,
             "email" => $user->email,
-            "created" => ($user->created_at),
-            "category" => $user->category,
+            "created" => ($user->created_at)
         ];
     }
 }

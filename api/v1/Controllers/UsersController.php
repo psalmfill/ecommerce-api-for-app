@@ -3,9 +3,17 @@
 namespace Api\v1\Controllers\User;
 
 use Illuminate\Http\Request;
+use Api\v1\Repositories\User\UserRepository;
+use Api\BaseController;
 
-class UsersController extends Controller
+class UsersController extends BaseController
 {
+    protected $userRepository;
+
+    public function __construct(UserRepository $userRepository)
+    {
+        $this->userRepository = $userRepository;   
+    }
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +21,7 @@ class UsersController extends Controller
      */
     public function profile($id)
     {
-        
+        return $this->userRepository->getProfile($id);
     }
 
     /**

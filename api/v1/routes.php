@@ -77,7 +77,9 @@ $api->version('v1', ['prefix' => 'api/v1', 'namespace' => 'Api\v1\Controllers'],
             $api->get('/profile/{user_id}', 'UsersController@profile');
             $api->put('/profile/update', 'UsersController@updateProfile');
             $api->put('/change-password', 'UsersController@profile');
-            $api->get('/cart-item', 'CartsController@cartItems');
+            $api->get('/cart-items/{user_id}', 'CartsController@index');
+            $api->post('/cart-items/add', 'CartsController@store');
+            $api->delete('/cart-items/remove/{id}', 'CartsController@removeFromCart');
             $api->get('/wish-list', 'CartsController@wishList');
             $api->get('/order', 'OrdersController@order');
         });

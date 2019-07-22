@@ -82,12 +82,12 @@ class AuthRepository
             JWTAuth::invalidate($request->token);
 
             return response()->json([
-                'success' => true,
+                'status' => 'success',
                 'message' => 'User logged out successfully'
             ]);
         } catch (JWTException $exception) {
             return response()->json([
-                'success' => false,
+                'status' => 'error',
                 'message' => 'Sorry, the user cannot be logged out'
             ], 500);
         }
