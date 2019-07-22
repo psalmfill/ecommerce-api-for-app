@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\UseUuid;
 
 class Role extends Model
 {
@@ -13,12 +14,19 @@ class Role extends Model
      *
      * @var array
      */
-    protected $fillable = [
-        'name', 
-    ];
+    protected $guarded = [];
+
+    protected static function boot()
+    {
+        parent::boot();
+        
+        
+        self::bootUsesUuid();
+    }
+
 
     public function users()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class,'role_user');
     }
 }

@@ -9,6 +9,14 @@ class Category extends Model
 {
     use UseUuid;
 
+    protected $guarded = [];
+
+    protected static function boot()
+    {
+        parent::boot();
+        self::bootUsesUuid();
+    }
+
     public function products()
     {
         return $this->hasMany(Product::class);
@@ -16,7 +24,6 @@ class Category extends Model
 
     public function children()
     {
-        return $this->hasMany(Category::class,'parent_id','id');
+        return $this->hasMany(Category::class, 'parent_id', 'id');
     }
-    
 }

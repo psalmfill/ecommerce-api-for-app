@@ -15,10 +15,10 @@ class CreateCategoriesTable extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('name');
+            $table->string('name')->unique();
             $table->string('slug');
             $table->string('description');
-            $table->uuid('parent_id');
+            $table->uuid('parent_id')->nullable();
             $table->timestamps();
         });
     }

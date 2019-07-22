@@ -1,11 +1,19 @@
 <?php
 
-namespace App\Api\v1\Controllers;
+namespace Api\v1\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use Api\v1\Repositories\Admin\RolesRepository;
+use Api\BaseController;
 
-class ProductsController extends Controller
+class RolesController extends BaseController
 {
+    private $rolesRepository;
+
+    public function __construct(RolesRepository $rolesRepository)
+    {
+        $this->rolesRepository = $rolesRepository;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -13,17 +21,7 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return $this->rolesRepository->getAll();
     }
 
     /**
@@ -34,7 +32,7 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return $this->rolesRepository->create($request->all());
     }
 
     /**
@@ -45,18 +43,7 @@ class ProductsController extends Controller
      */
     public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        return $this->rolesRepository->find($id);
     }
 
     /**
@@ -68,7 +55,7 @@ class ProductsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return $this->rolesRepository->update($id,$request->all());
     }
 
     /**
@@ -79,6 +66,6 @@ class ProductsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return $this->rolesRepository->delete($id);
     }
 }

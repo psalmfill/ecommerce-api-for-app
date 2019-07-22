@@ -1,11 +1,20 @@
 <?php
 
-namespace App\Api\v1\Controllers;
+namespace Api\v1\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use Api\v1\Repositories\Admin\ProductRepository;
+use Api\BaseController;
 
-class ProductsController extends Controller
+class ProductsController extends BaseController
 {
+
+    private $productRepository;
+
+    public function __construct(ProductRepository $productRepository)
+    {
+        $this->productRepository = $productRepository;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +22,7 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        //
+        return $this->productRepository->getAll();
     }
 
     /**
@@ -34,7 +43,7 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return $this->productRepository->create($request->all());
     }
 
     /**
@@ -43,20 +52,9 @@ class ProductsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $product_id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        return $this->productRepository->find($product_id);
     }
 
     /**
@@ -68,7 +66,7 @@ class ProductsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return $this->productRepository->update($id,$request->all());
     }
 
     /**
@@ -79,6 +77,6 @@ class ProductsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return $this->productRepository->delete($id);
     }
 }

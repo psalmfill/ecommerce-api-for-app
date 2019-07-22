@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Api;
+namespace Api;
 
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller ;

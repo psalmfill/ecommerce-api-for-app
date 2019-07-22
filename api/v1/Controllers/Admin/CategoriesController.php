@@ -1,11 +1,19 @@
 <?php
 
-namespace App\Api\v1\Controllers;
+namespace Api\v1\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use Api\v1\Repositories\Admin\CategoriesRepository;
+use Api\BaseController;
 
-class CategoriesController extends Controller
+class CategoriesController extends BaseController
 {
+    private $categoriesRepository;
+
+    public function __construct(CategoriesRepository $categoriesRepository)
+    {
+        $this->categoriesRepository = $categoriesRepository;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -13,19 +21,18 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        //
+        return $this->categoriesRepository->getAll();
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function subCategory($id)
     {
-        //
+        return $this->categoriesRepository->getChildren($id);
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -34,7 +41,7 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return $this->categoriesRepository->create($request->all());
     }
 
     /**
@@ -45,18 +52,7 @@ class CategoriesController extends Controller
      */
     public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        return $this->categoriesRepository->find($id);
     }
 
     /**
@@ -68,7 +64,7 @@ class CategoriesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return $this->categoriesRepository->update($id,$request->all());
     }
 
     /**
@@ -79,6 +75,6 @@ class CategoriesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return $this->categoriesRepository->delete($id);
     }
 }

@@ -3,9 +3,10 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
+use App\Traits\UseUuid;
 class Product extends Model
 {
+
     use UseUuid;
 
     /**
@@ -13,11 +14,16 @@ class Product extends Model
      *
      * @var array
      */
-    protected $fillable = [
-        'name', 'description', 'category_id',
-    ];
+    protected $guarded = [];
 
-    
+    protected static function boot()
+    {
+        parent::boot();
+        
+        
+        self::bootUsesUuid();
+    }
+
     public function orders()
     {
         return $this->hasMany(Orders::class);

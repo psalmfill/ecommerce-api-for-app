@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\UseUuid;
 
 class Review extends Model
 {
@@ -13,9 +14,15 @@ class Review extends Model
      *
      * @var array
      */
-    protected $fillable = [
-        'user_id', 'product_id', 'rating','body'
-    ];
+    protected $guarded = [];
+
+    protected static function boot()
+    {
+        parent::boot();
+        
+        self::bootUsesUuid();
+        
+    }
 
     public function user()
     {

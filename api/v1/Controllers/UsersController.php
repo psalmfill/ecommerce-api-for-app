@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Api\v1\Controllers;
+namespace Api\v1\Controllers\User;
 
 use Illuminate\Http\Request;
 
-class ProductsController extends Controller
+class UsersController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function profile($id)
     {
-        //
+        
     }
 
     /**

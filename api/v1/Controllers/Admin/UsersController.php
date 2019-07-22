@@ -1,11 +1,19 @@
 <?php
 
-namespace App\Api\v1\Controllers;
+namespace Api\v1\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use Api\BaseController;
+use Api\v1\Repositories\Admin\UsersRepository;
 
-class ProductsController extends Controller
+class UsersController extends BaseController
 {
+    private $usersRepository;
+
+    public function __construct(UsersRepository $usersRepository)
+    {   
+        $this->usersRepository = $usersRepository;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +21,7 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        //
+        return $this->usersRepository->getAll();
     }
 
     /**
@@ -45,18 +53,7 @@ class ProductsController extends Controller
      */
     public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        return $this->usersRepository->find($id);
     }
 
     /**
@@ -68,9 +65,21 @@ class ProductsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return $this->usersRepository->update($id,$request->except(['password','email']));
     }
 
+    public function orders($id){
+        return $this->usersRepository->orders($id);
+    }
+
+    public function wishList($id){
+        return $this->usersRepository->wishList($id);
+    }
+    
+    public function cartItems($id){
+        return $this->usersRepository->cartItems($id);
+    }
+    
     /**
      * Remove the specified resource from storage.
      *
