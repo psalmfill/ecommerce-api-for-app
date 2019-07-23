@@ -3,17 +3,25 @@
 namespace Api\v1\Controllers\User;
 
 use Illuminate\Http\Request;
+use Api\BaseController;
+use Api\v1\Repositories\User\WishListRepository;
 
-class WishListsController extends Controller
+class WishListsController extends BaseController
 {
+    protected $wishListRepository;
+
+    public function __construct(WishListRepository $wishListRepository)
+    {
+     $this->wishListRepository = $wishListRepository;
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        //
+        return $this->wishListRepository->getUserWishListItems($id);
     }
 
     /**
@@ -34,7 +42,7 @@ class WishListsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return $this->wishListRepository->addToWishList($request);
     }
 
     /**

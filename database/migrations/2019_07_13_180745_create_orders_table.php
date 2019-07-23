@@ -21,7 +21,9 @@ class CreateOrdersTable extends Migration
             $table->unsignedInteger('quantity');
             $table->enum('status',['paid','not-paid'])->default('not-paid');
             $table->enum('payment_type',['online','shop'])->default('shop');
+            $table->boolean("delivered")->default(false);
             $table->timestamps();
+            
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
         });

@@ -18,7 +18,7 @@ class ProductTransformer extends TransformerAbstract
             'hasDiscount' => $product->discount !=0,
             "status" => $product->quantity?"In stock": "out of stock",
             "created" => ($product->created_at),
-            "category" => fractal($product->category,new CategoryTransformer()),
+            "category" => fractal($product->category,new CategoryTransformer())->serializeWith(new \Spatie\Fractalistic\ArraySerializer()),
         ];
     }
 }
