@@ -14,7 +14,7 @@ class Review extends Model
      *
      * @var array
      */
-    protected $guarded = [];
+    protected $guarded = ['id'];
 
     protected static function boot()
     {

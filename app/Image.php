@@ -9,7 +9,8 @@ use Psy\Util\Str;
 class Image extends Model
 {
     use UseUuid;
-
+    protected $guarded = ['id'];
+    
     protected static function boot()
     {
         parent::boot();

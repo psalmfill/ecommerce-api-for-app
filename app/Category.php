@@ -9,7 +9,7 @@ class Category extends Model
 {
     use UseUuid;
 
-    protected $guarded = [];
+    protected $guarded = ['id'];
 
     protected static function boot()
     {

@@ -9,7 +9,7 @@ class Order extends Model
 {
     use UseUuid;
 
-    protected $guarded = [];
+    protected $guarded = ['id'];
     
     public static function boot()
     {

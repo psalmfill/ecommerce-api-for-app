@@ -36,4 +36,10 @@ class ProductsController extends BaseController
     {
         return $this->productRepository->find($product_id);
     }
+
+    public function productReview(Request $request)
+    {
+        return $this->productRepository->productReview( $request->all());
+
+    }
 }

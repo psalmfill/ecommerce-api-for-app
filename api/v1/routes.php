@@ -84,6 +84,7 @@ $api->version('v1', ['prefix' => 'api/v1', 'namespace' => 'Api\v1\Controllers'],
             $api->post('/wish-list', 'WishListsController@store');
             $api->post('/orders', 'OrdersController@createOrder');
             $api->get('/orders/{user_id}', 'OrdersController@getUserOrders');
+            $api->post('/review','ProductsController@productReview');
         });
 
         /**********************************************************************************

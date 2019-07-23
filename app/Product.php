@@ -14,7 +14,7 @@ class Product extends Model
      *
      * @var array
      */
-    protected $guarded = [];
+    protected $guarded = ['id'];
 
     protected static function boot()
     {
@@ -24,6 +24,17 @@ class Product extends Model
         self::bootUsesUuid();
     }
 
+    public function getRatingAttribute()
+    {
+        if(!$this->reviews->count())
+            return 0;
+        $sum = 0;
+        foreach($this->reviews as $review)
+        {
+            $sum += $review->rating;
+        }
+        return ceil($sum/$this->reviews->count()) ;
+    }
     public function orders()
     {
         return $this->hasMany(Orders::class);

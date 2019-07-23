@@ -8,7 +8,7 @@ use App\Traits\UseUuid;
 class Cart extends Model
 {
     use UseUuid;
-    protected $guarded =[];
+    protected $guarded = ['id'];
      /**
      * boot model to use uuid
      */
