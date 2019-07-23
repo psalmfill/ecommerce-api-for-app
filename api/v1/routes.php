@@ -82,7 +82,8 @@ $api->version('v1', ['prefix' => 'api/v1', 'namespace' => 'Api\v1\Controllers'],
             $api->delete('/cart-items/remove/{id}', 'CartsController@removeFromCart');
             $api->get('/wish-list/{user_id}', 'WishListsController@index');
             $api->post('/wish-list', 'WishListsController@store');
-            $api->get('/order', 'OrdersController@order');
+            $api->post('/orders', 'OrdersController@createOrder');
+            $api->get('/orders/{user_id}', 'OrdersController@getUserOrders');
         });
 
         /**********************************************************************************
