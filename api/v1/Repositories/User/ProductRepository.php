@@ -9,6 +9,9 @@ use Api\BaseRepository;
 use App\Category;
 use App\Review;
 use Api\v1\Transformers\ProductWithReviewsTransformer;
+use Illuminate\Http\Request;
+use Api\v1\Transformers\ReviewTransformer;
+use Illuminate\Http\Response;
 
 class ProductRepository extends BaseRepository
 {
@@ -16,14 +19,14 @@ class ProductRepository extends BaseRepository
     use GenarateSlug;
 
     private $product;
-    private $productransformer;
+    private $productTransformer;
     private $category;
     private $review;
     public function __construct(Product $product,Review $review,Category $category, ProductTransformer $productTransformer)
     {
         $this->product = $product;
         $this->category = $category;
-        $this->productransformer = $productTransformer;
+        $this->productTransformer = $productTransformer;
         $this->review = $review;
     }
 
@@ -31,32 +34,49 @@ class ProductRepository extends BaseRepository
      * get all the 
      */
     public function getAll()
-    {
-       $products =  $this->product->paginate(15);
-        $products =  $this->transformCollection($products, $this->productransformer);
+    {   $products =  $this->product->query();
+        /**
+         * handle pr
+         */
+        $sort = request('sort_by');
+        $dir = request('dir');
+         if( $sort && ($sort == 'price' || $sort == 'name'))
+            $products = $products->orderBy($sort,$dir);
+        
+      $products = $products->paginate(15);
+      return $products;
+        $products =  $this->transformCollection($products, $this->productTransformer);
         return $this->createSerilizer($products);
     
     }
 
     public function find($id)
     {
-        return  fractal($this->product->findOrFail($id), new ProductWithReviewsTransformer());
+        return  $this->response->item($this->product->findOrFail($id), new ProductWithReviewsTransformer());
 
     }
 
     public function productByCategory($id)
     {
-        $products = $this->category->find($id)->products;
+        $products = $this->product->query();
+        $products = $products->where('category_id',$id);
+        $sort = request('sort_by');
+        $dir = request('dir');
+         if( $sort && ($sort == 'price' || $sort == 'name'))
+            $products = $products->orderBy($sort,$dir);
 
-        return fractal($products, $this->productransformer);
+
+        $products = $products->paginate(12);
+
+        return $this->response->paginator($products, $this->productTransformer)->addMeta('status_code',Response::HTTP_OK);
     }
 
     public function productReview($data)
     {
-        if($this->product->where([
+        if($this->review->where([
             ['user_id',$data['user_id']],
             ['product_id',$data['product_id']],
-        ]))
+        ])->first())
             return response()->json(
                 [
                     'status' => 'error',
@@ -66,7 +86,7 @@ class ProductRepository extends BaseRepository
        $review = new $this->review($data);
        
        if($review->save())
-            return $review;
+            return $this->response->item($review, new ReviewTransformer());
        
     }
 

@@ -20,6 +20,7 @@ class CreateProductsTable extends Migration
             $table->longText("description");
             $table->double("price");
             $table->double('old_price')->default(0.00);
+            $table->bigInteger('stock');
             $table->string('category_id');
             $table->unsignedInteger("discount")->default(0);
             $table->timestamps();

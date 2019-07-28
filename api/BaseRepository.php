@@ -5,9 +5,11 @@ use League\Fractal\Resource\Item;
 use League\Fractal\Resource\Collection;
 use League\Fractal\Manager;
 use League\Fractal\Serializer\DataArraySerializer;
+use Dingo\Api\Routing\Helpers;
 
 class BaseRepository {
 
+    use Helpers;
     public $manager;
     
 

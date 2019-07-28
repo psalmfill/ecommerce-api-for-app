@@ -12,7 +12,7 @@ class OrderTransformer extends TransformerAbstract
     {
         return [
             "id" => $order->id,
-            "product" => $order->product,
+            "product" => fractal($order->product,new ProductTransformer())->serializeWith(new \Spatie\Fractalistic\ArraySerializer()),
             "quantity" => $order->quantity,
             "price"    => $order->price,
             "total_price" => $order->total,
