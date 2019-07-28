@@ -1,6 +1,8 @@
 <?php
 namespace App\Traits;
 
+use Illuminate\Support\Str;
+
 trait GenarateSlug 
 {
     public function createSlug($model, $title, $id = null)
@@ -18,7 +20,7 @@ trait GenarateSlug
         if($id !=null && $allSlugs->count() >0 ){
             return  $this->getSlug($model, $id);
         }
-        return $slug .'-' . $allSlugs->count();
+        return $slug .'-' . strtolower(str_random(8));
 
     }
 

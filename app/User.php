@@ -10,6 +10,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
+    private $ADMIN = 'admin';
     use Notifiable,UseUuid;
 
     /**
@@ -95,5 +96,19 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Review::class);
     }
 
-    
+    /**
+     * Check if the user has an admin role
+     *
+     * @return void
+     */
+    public function getIsAdminAttribute(){
+        $roles = $this->roles;
+        foreach($roles as $role){
+            if(strtolower($role->name) == $this->ADMIN)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }

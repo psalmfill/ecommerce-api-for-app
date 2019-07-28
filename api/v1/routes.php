@@ -10,7 +10,7 @@ $api->version('v1', ['prefix' => 'api/v1', 'namespace' => 'Api\v1\Controllers'],
      * ADMIN ENDPOINTS
      *****************************************************************************/
 
-    $api->group(['prefix' => 'admin', 'namespace' => 'Admin'], function ($api) {
+    $api->group(['prefix' => 'admin', 'namespace' => 'Admin','middleware'=>'admin'], function ($api) {
 
         $api->get('/login', 'AdminController@login');
         $api->put('/update-profile', 'AdminController@updateProfile');

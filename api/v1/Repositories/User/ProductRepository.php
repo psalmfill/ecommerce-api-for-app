@@ -36,10 +36,10 @@ class ProductRepository extends BaseRepository
     public function getAll()
     {   $products =  $this->product->query();
         /**
-         * handle pr
+         * handle filter
          */
         $sort = request('sort_by');
-        $dir = request('dir');
+        $dir = request('order');
          if( $sort && ($sort == 'price' || $sort == 'name'))
             $products = $products->orderBy($sort,$dir);
         

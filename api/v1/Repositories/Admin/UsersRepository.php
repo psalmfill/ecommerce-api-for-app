@@ -3,16 +3,28 @@
 namespace Api\v1\Repositories\Admin;
 
 use App\User;
+use Api\BaseRepository;
+use Api\v1\Transformers\OrderTransformer;
+use Api\v1\Transformers\WishListTransformer;
+use Api\v1\Transformers\CartTransformer;
 
-class UsersRepository
+class UsersRepository extends BaseRepository
 {
 
 
     private $user;
+    private $orderTransformer;
+    private $wishListTransformer;
+    private $cartTransformer;
 
-    public function __construct(User $user)
+    public function __construct(User $user,
+     OrderTransformer $orderTransformer,
+     WishListTransformer $wishListTransformer,
+     CartTransformer $cartTransformer)
     {
         $this->user = $user;
+        $this->orderTransformer = $orderTransformer;
+        $this->wishListTransformer = $wishListTransformer;
     }
 
     /**
@@ -36,17 +48,20 @@ class UsersRepository
         $data = (array) $data;
         $user = new $this->user($data);
 
-        return $user->save() ? $user : false;
+        return $user->save() ?  response()->json([
+            'status'=> 'success',
+            'data' => $user
+        ],200) : $this->response->error('Failed creating user',Response::HTTP_ACCEPTED);
     }
 
     public function update($id,$data)
     {
         $user = $this->user->find($id);
     
-        if($user->update($data))
-            return $user;
-
-        return 'Fail updating user';
+        return $user->update($data) ?  response()->json([
+            'status'=> 'success',
+            'data' => $user
+        ],200) : $this->response->error('Failed updating user',Response::HTTP_ACCEPTED);
     }
 
     public function suspend($id)
@@ -61,21 +76,23 @@ class UsersRepository
 
     public function orders($id)
     {
-        $orders = $this->user->find($id)->orders;
-        return $orders;
+        $orders = $this->user->findOrFail($id)->orders;
+        return $this->response->item($orders, new $this->orderTransformer);
     }
 
     public function wishList($id)
     {
         $wishList = $this->user->find($id)->wishListItems;
-        return $wishList;
+        return $this->response->item($wishList, new $this->wishListTransformer);
+
     }
 
     public function cartItems($id)
     {
-        return $id;
-        $cartitems = $this->user->find($id)->cartItems;
-        return $cartitems;
+        
+        $cartItems = $this->user->find($id)->cartItems;
+        return $this->response->item($cartItems, new $this->cartTransformer);
+  
     }
     
     /*public function delete($id)

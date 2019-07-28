@@ -5,6 +5,7 @@ namespace Api\v1\Repositories\Admin;
 use App\Role;
 use App\Traits\GenarateSlug;
 use Api\BaseRepository;
+use Illuminate\Http\Response;
 
 class RolesRepository extends BaseRepository
 {
@@ -23,15 +24,23 @@ class RolesRepository extends BaseRepository
      */
     public function getAll()
     {
-        return $this->role->paginate(15);
+        $roles = $this->role->all();
+        return response()->json([
+            'status' => 'success',
+            'data' => $roles
+        ], 200);
     }
 
-    
+
 
     public function find($id)
     {
 
-        return $this->role->findOrFail($id);
+        $role = $this->role->findOrFail($id);
+        return response()->json([
+            'status' => 'success',
+            'data' => $role
+        ], 200);
     }
 
     public function create($data)
@@ -40,26 +49,30 @@ class RolesRepository extends BaseRepository
         $role = new $this->role($data);
         $role->slug = $this->createSlug($this->role, $data['name']);
 
-        return $role->save() ? $role : false;
+        return $role->save() ?  response()->json([
+            'status' => 'success',
+            'data' => $role
+        ], 200) : $this->response->error('Failed creating role', Response::HTTP_ACCEPTED);
     }
 
-    public function update($id,$data)
+    public function update($id, $data)
     {
-        $role = $this->role->find($id);
-    
-        $role->slug = $this->createSlug($this->role,$data['name'],$id);
-        if($role->update($data))
-            return $role;
+        $role = $this->role->findOrFail($id);
 
-        return 'Fail updating role';
+        $role->slug = $this->createSlug($this->role, $data['name'], $id);
+
+        return $role->update($data) ?  response()->json([
+            'status' => 'success',
+            'data' => $role
+        ], 200) : $this->response->error('Failed updating role', Response::HTTP_ACCEPTED);
     }
 
     public function delete($id)
     {
 
-        if ($this->role->destroy($id))
-            return 'Delete Success';
-
-        return  'Fail deleting';
+        return $this->role->destroy($id) ?  response()->json([
+            'status' => 'success',
+            'message' => 'Role deleted'
+        ], 200) : $this->response->error('Failed creating role', Response::HTTP_ACCEPTED);
     }
 }

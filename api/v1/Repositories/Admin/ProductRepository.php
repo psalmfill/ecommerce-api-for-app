@@ -27,7 +27,18 @@ class ProductRepository extends BaseRepository
      */
     public function getAll()
     {
-        $products = $this->product->paginate(15);
+        $products =  $this->product->query();
+        /**
+         * handle filter
+         */
+        $sort = request('sort_by');
+        $dir = request('order');
+
+         if( $sort && ($sort == 'price' || $sort == 'name'))
+            $products = $products->orderBy($sort,$dir);
+
+        $products = $products->paginate(15);
+
         return  $this->response->paginator($products, new $this->productTransformer);
     }
 
