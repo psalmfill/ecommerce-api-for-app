@@ -8,11 +8,11 @@ use Api\BaseController;
 
 class AuthController extends BaseController
 {
-    private $authRespository; 
+    private $authRepository; 
 
     public function __construct(AuthRepository $authRepository)
     {
-        $this->authRespository  = $authRepository;
+        $this->authRepository  = $authRepository;
     }
     /*
      * Display a listing of the resource.
@@ -22,7 +22,7 @@ class AuthController extends BaseController
     public function register(Request $request)
     {
         
-        return $this->authRespository->createUser($request);
+        return $this->authRepository->createUser($request);
     }
 
     /**
@@ -33,6 +33,6 @@ class AuthController extends BaseController
     public function login(Request $request)
     {
         
-        return $this->authRespository->login($request);
+        return $this->authRepository->login($request);
     }
 }

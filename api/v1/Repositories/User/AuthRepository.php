@@ -8,6 +8,7 @@ use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
 use JWTAuth;
 use App\Role;
+use Illuminate\Http\Response;
 
 class AuthRepository
 {
@@ -30,7 +31,14 @@ class AuthRepository
     {
         
         $userData = (array) $data->all();
-        
+
+        //check if user exist
+        if($this->user->where('email',$userData['email'])->first())
+            return response()->json([
+                'status' => 'error',
+                'message' => 'User with email address already exist'
+            ],Response::HTTP_CONFLICT);
+            
         $user = new $this->user($userData);
         $user->password = bcrypt($userData['password']);
 

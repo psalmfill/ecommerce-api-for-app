@@ -73,7 +73,7 @@ $api->version('v1', ['prefix' => 'api/v1', 'namespace' => 'Api\v1\Controllers'],
 
         $api->post('/register', 'AuthController@register');
         $api->post('/login', 'AuthController@login');
-        $api->group(['prefix' => 'user'], function ($api) {
+        $api->group(['prefix' => 'user','middleware'=>'auth.api'], function ($api) {
             $api->get('/profile/{user_id}', 'UsersController@profile');
             $api->put('/profile/update', 'UsersController@updateProfile');
             $api->put('/change-password', 'UsersController@profile');
