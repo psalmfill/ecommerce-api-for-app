@@ -21,11 +21,21 @@ class Cart extends Model
         self::bootUsesUuid();
     }
 
+    /**
+     * get cart item owner
+     *
+     * @return model relationship
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * Get product
+     *
+     * @return model relationship
+     */
     public function product()
     {
         return $this->belongsTo(Product::class);

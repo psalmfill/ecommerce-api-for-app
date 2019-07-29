@@ -24,11 +24,21 @@ class Review extends Model
         
     }
 
+    /**
+     * Get review user
+     *
+     * @return model relationship
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * Get reviewed product
+     *
+     * @return model relationship
+     */
     public function product()
     {
         return $this->belongsTo(Product::class);

@@ -18,18 +18,13 @@ class Image extends Model
         self::bootUsesUuid();
     }
 
+    /**
+     * Get the model that the image belongs to
+     *
+     * @return morph relationship
+     */
     public function imageable()
     {
         return $this->morphTo();
-    }
-
-    public function getIncrementing()
-    {
-        return false;
-    }
-
-    public function getKeyType()
-    {
-        return 'string';
     }
 }

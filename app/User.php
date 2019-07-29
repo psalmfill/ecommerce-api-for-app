@@ -71,26 +71,51 @@ class User extends Authenticatable implements JWTSubject
         self::bootUsesUuid();
     }
 
+    /**
+     * Get all roles owned by the user
+     *
+     * @return model relationship
+     */
     public function roles()
     {
         return $this->belongsToMany(Role::class,'role_user');
     }
 
+    /**
+     * Get user items on cart
+     *
+     * @return model relationship
+     */
     public function cartItems()
     {
         return $this->belongsToMany(Product::class,'carts','user_id','product_id');
     }
 
+    /**
+     * Get users Item on Wish List
+     *
+     * @return model relationship
+     */
     public function wishListItems()
     {
         return $this->belongsToMany(Product::class,'wish_lists','user_id','product_id');
     }
 
+    /**
+     * Get User order
+     *
+     * @return model relationship
+     */
     public function orders()
     {
         return $this->hasMany(Order::class,'user_id');
     }
 
+    /**
+     * Get User reviews on product
+     *
+     * @return model relationship
+     */
     public function reviews()
     {
         return $this->hasMany(Review::class);

@@ -24,6 +24,11 @@ class Product extends Model
         self::bootUsesUuid();
     }
 
+    /**
+     * Get the average rating on the product
+     *
+     * @return Integer
+     */
     public function getRatingAttribute()
     {
         if(!$this->reviews->count())
@@ -35,21 +40,42 @@ class Product extends Model
         }
         return ceil($sum/$this->reviews->count()) ;
     }
+
+    /**
+     * Get the orders made on the product
+     *
+     * @return model relationship
+     */
     public function orders()
     {
         return $this->hasMany(Order::class);
     }
 
+    /**
+     * Get product category
+     *
+     * @return model relationship
+     */
     public function category()
     {
         return $this->belongsTo(Category::class);
     }
 
+    /**
+     * Get all product images
+     *
+     * @return model relationship
+     */
     public function images()
     {
         return $this->morphMany(Image::class,'imageable');
     }
 
+    /**
+     * Get reviews made on product
+     *
+     * @return model relationship
+     */
     public function reviews()
     {
         return $this->hasMany(Review::class);
