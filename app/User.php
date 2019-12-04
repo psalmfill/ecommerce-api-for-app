@@ -2,10 +2,12 @@
 
 namespace App;
 
+use App\Mail\RegistrationCompleted;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Traits\UseUuid;
+use Illuminate\Support\Facades\Mail;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
@@ -69,6 +71,12 @@ class User extends Authenticatable implements JWTSubject
         
         
         self::bootUsesUuid();
+        self::created(function($user){
+            
+            Mail::to($user)
+                ->send(new RegistrationCompleted($user));
+                
+        });
     }
 
     /**

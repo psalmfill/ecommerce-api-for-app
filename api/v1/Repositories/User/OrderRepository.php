@@ -7,6 +7,7 @@ use Api\BaseRepository;
 use App\User;
 use App\Order;
 use Api\v1\Transformers\OrderTransformer;
+use App\Notifications\OrderCompleted;
 
 class OrderRepository extends BaseRepository
 {
@@ -51,11 +52,13 @@ class OrderRepository extends BaseRepository
             if ($order->save()) {
                 //remve product from cart items
                 auth()->user()->cartItems()->detach($product->id);
-                
+
                 //update the product stock
                 $pro = $this->product->find($product->id);
                 $pro->stock = $pro->stock - $product->quantity;
                 $pro->save();
+                auth()->user()->notify(new OrderCompleted($order));
+      
             }
         }
         return response()->json(

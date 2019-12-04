@@ -64,6 +64,7 @@ class UserRepository extends BaseRepository
     public function updateImage($data)
     {
         //TODO LOGIC TO UPLOAD IMAGES
+        
     }
 
     public function suspendAccount($id)

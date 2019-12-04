@@ -14,3 +14,10 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('mail', function () {
+    $invoice = App\Order::find('17b8f6e8-883d-4b4e-91a0-4adcc09105b5');
+
+    return (new App\Notifications\OrderCompleted($invoice))
+                ->toMail($invoice->user);
+});
