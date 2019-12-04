@@ -5,6 +5,7 @@ namespace Api\v1\Controllers\Admin;
 use Illuminate\Http\Request;
 use Api\v1\Repositories\Admin\ProductRepository;
 use Api\BaseController;
+use Api\v1\Repositories\Requests\ProductRequest;
 
 class ProductsController extends BaseController
 {
@@ -41,7 +42,7 @@ class ProductsController extends BaseController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
         return $this->productRepository->create($request->all());
     }

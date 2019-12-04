@@ -28,9 +28,9 @@ class CartRepository extends BaseRepository
         $this->cartTransformer = $cartTransformer;
     }
 
-    public function getUserCartItems($id)
+    public function getUserCartItems()
     {
-        $cartItems = $this->cart->where('user_id',$id)->get();
+        $cartItems = $this->cart->where('user_id',auth()->user()->id)->get();
 
         return fractal($cartItems, $this->cartTransformer);
         // return $this->us
@@ -39,7 +39,7 @@ class CartRepository extends BaseRepository
     public function addToCart($data)
     {
         $cart = $this->cart->where([
-            ['user_id', $data->user_id],
+            ['user_id', auth()->user()->id],
             ['product_id', $data->product_id],
         ])->first();
 
@@ -48,7 +48,7 @@ class CartRepository extends BaseRepository
         }
         $cart = new $this->cart;
         $cart->product_id = $data->product_id;
-        $cart->user_id = $data->user_id;
+        $cart->user_id = auth()->user()->id;
         $cart->quantity = $data->quantity;
         if ($cart->save())
             return fractal($cart, $this->cartTransformer);

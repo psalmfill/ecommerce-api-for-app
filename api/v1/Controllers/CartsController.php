@@ -5,6 +5,7 @@ namespace Api\v1\Controllers\User;
 use Illuminate\Http\Request;
 use Api\v1\Repositories\User\CartRepository;
 use Api\BaseController;
+use Api\v1\Repositories\Requests\CartRequest;
 
 class CartsController extends BaseController
 {
@@ -19,9 +20,9 @@ class CartsController extends BaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id)
+    public function index()
     {
-        return $this->cartRepository->getUserCartItems($id);
+        return $this->cartRepository->getUserCartItems();
     }
 
    
@@ -30,7 +31,7 @@ class CartsController extends BaseController
         //
     }
 
-    public function store(Request $request)
+    public function store(CartRequest $request)
     {
         return $this->cartRepository->addToCart($request);
     }

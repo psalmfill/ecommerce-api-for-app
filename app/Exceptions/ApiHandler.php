@@ -6,6 +6,7 @@ use Exception;
 use Dingo\Api\Exception\Handler as DingoHandler;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
+use Illuminate\Validation\ValidationException;
 
 class ApiHandler extends DingoHandler
 {
@@ -26,6 +27,12 @@ class ApiHandler extends DingoHandler
         }
         if ($exception instanceof \Illuminate\Auth\AuthenticationException) {
             return response()->json(['message' => 'Unauthorized', 'status_code' => 401], 401);
+        }
+        if ($exception instanceof ValidationException) {
+            return response()->json([
+                'status' => 'cannot created category',
+                'message' => $exception->errors()
+            ]);
         }
         return parent::handle($exception);
     }

@@ -4,6 +4,7 @@ namespace Api\v1\Controllers\User;
 
 use Illuminate\Http\Request;
 use Api\BaseController;
+use Api\v1\Repositories\Requests\OrderRequest;
 use Api\v1\Repositories\User\OrderRepository;
 
 class OrdersController extends BaseController
@@ -15,12 +16,12 @@ class OrdersController extends BaseController
         $this->orderRepository = $orderRepository;
     }
 
-    public function getUserOrders($id)
+    public function getUserOrders()
     {
-        return $this->orderRepository->getUserOrderItems($id);
+        return $this->orderRepository->getUserOrderItems();
     }
 
-    public function createOrder(Request $request)
+    public function createOrder(OrderRequest $request)
     {
         return $this->orderRepository->createOrder($request->all());
     }

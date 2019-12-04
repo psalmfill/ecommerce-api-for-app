@@ -5,6 +5,7 @@ namespace Api\v1\Controllers\Admin;
 use Illuminate\Http\Request;
 use Api\v1\Repositories\Admin\CategoriesRepository;
 use Api\BaseController;
+use Api\v1\Repositories\Requests\CategoryRequest;
 
 class CategoriesController extends BaseController
 {
@@ -39,7 +40,7 @@ class CategoriesController extends BaseController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
         return $this->categoriesRepository->create($request->all());
     }

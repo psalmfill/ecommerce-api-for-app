@@ -16,6 +16,10 @@ class OrderTransformer extends TransformerAbstract
             "quantity" => $order->quantity,
             "price"    => $order->price,
             "total_price" => $order->total,
+            "status" => $order->status,
+            "payment_type" => $order->status === 'paid'? $order->payment_type: null,
+            "delivered" => $order->delivered?'yes':'no',
+
             "created" => ($order->created_at),
         ];
     }

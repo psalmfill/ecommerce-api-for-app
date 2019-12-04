@@ -46,9 +46,7 @@ class ProductRepository extends BaseRepository
             $products = $products->orderBy($sort, $dir);
 
         $products = $products->paginate(15);
-        return $products;
-        $products =  $this->transformCollection($products, $this->productTransformer);
-        return $this->createSerilizer($products);
+        return $this->response->paginator($products, $this->productTransformer);
     }
 
     public function find($id)
@@ -74,7 +72,7 @@ class ProductRepository extends BaseRepository
     public function productReview($data)
     {
         if ($this->review->where([
-            ['user_id', $data['user_id']],
+            ['user_id', auth()->user()->id],
             ['product_id', $data['product_id']],
         ])->first())
             return response()->json(
@@ -84,6 +82,7 @@ class ProductRepository extends BaseRepository
                 ]
             );
         $review = new $this->review($data);
+        $review->user_id = auth()->user()->id;
 
         if ($review->save())
             return $this->response->item($review, new ReviewTransformer());

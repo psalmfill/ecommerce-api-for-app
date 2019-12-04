@@ -5,6 +5,7 @@ namespace Api\v1\Controllers\User;
 use Illuminate\Http\Request;
 use Api\v1\Repositories\User\ProductRepository;
 use Api\BaseController;
+use Api\v1\Repositories\Requests\ReviewRequest;
 
 class ProductsController extends BaseController
 {
@@ -37,7 +38,7 @@ class ProductsController extends BaseController
         return $this->productRepository->find($product_id);
     }
 
-    public function productReview(Request $request)
+    public function productReview(ReviewRequest $request)
     {
         return $this->productRepository->productReview( $request->all());
 

@@ -6,6 +6,8 @@ use App\Category;
 use App\Traits\GenarateSlug;
 use Api\BaseRepository;
 use Api\v1\Transformers\CategoryTransformer;
+use Api\v1\Transformers\SubCategoryTransformer;
+use Illuminate\Http\Response;
 
 class CategoriesRepository extends BaseRepository
 {
@@ -14,11 +16,14 @@ class CategoriesRepository extends BaseRepository
 
     private $category;
     private $categoryTransformer;
+    private $subCategoryTransformer;
 
-    public function __construct(Category $category, CategoryTransformer $categoryTransformer)
+    public function __construct(Category $category, CategoryTransformer $categoryTransformer,
+                                SubCategoryTransformer $subCategoryTransformer)
     {
         $this->category = $category;
         $this->categoryTransformer = $categoryTransformer;
+        $this->subCategoryTransformer = $subCategoryTransformer;
     }
 
     /**
@@ -36,7 +41,7 @@ class CategoriesRepository extends BaseRepository
     public function getChildren($id)
     {
         $categories =  $this->category->where('parent_id',$id)->paginate(15);
-        return $this->response->paginator($categories, new $this->categoryTransformer);
+        return $this->response->paginator($categories, new $this->subCategoryTransformer);
     }
 
     public function find($id)
@@ -48,13 +53,13 @@ class CategoriesRepository extends BaseRepository
 
     public function create($data)
     {
-        $data = (array) $data;
+        // $data = (array) $data;
         $category = new $this->category($data);
         $category->slug = $this->createSlug($this->category, $data['name']);
 
         //TODO create image Upload script
 
-        return $category->save() ? $this->response->item( $category, new $this->categoryTransformer) : 
+        return $category->save() ? $this->response->item( $category, new $this->categoryTransformer)->setStatusCode(Response::HTTP_CREATED) : 
             $this->response->error;
     }
 

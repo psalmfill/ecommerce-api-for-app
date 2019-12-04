@@ -10,7 +10,7 @@ $api->version('v1', ['prefix' => 'api/v1', 'namespace' => 'Api\v1\Controllers'],
      * ADMIN ENDPOINTS
      *****************************************************************************/
 
-    $api->group(['prefix' => 'admin', 'namespace' => 'Admin','middleware'=>'admin'], function ($api) {
+$api->group(['prefix' => 'admin', 'namespace' => 'Admin','middleware'=>'admin'], function ($api) {
 
         $api->get('/login', 'AdminController@login');
         $api->put('/update-profile', 'AdminController@updateProfile');
@@ -56,11 +56,11 @@ $api->version('v1', ['prefix' => 'api/v1', 'namespace' => 'Api\v1\Controllers'],
         $api->group(['prefix' => 'users'], function ($api) {
             $api->get('/', 'UsersController@index');
             $api->get('/{user_id}', 'UsersController@show');
-            $api->get('/suspend/{user_id}', 'UsersController@show');
-            $api->get('/orders/{user_id}', 'UsersController@orders');
-            $api->get('cart/{user_id}', 'UsersController@cartItems');
-            $api->get('wishlist/{user_id}', 'UsersController@wishList');
-            $api->put('/update/{user_id}', 'UsersController@update');
+            $api->get('/{user_id}/suspend', 'UsersController@show');
+            $api->get('/{user_id}/orders', 'UsersController@orders');
+            $api->get('/{user_id}/cart', 'UsersController@cartItems');
+            $api->get('/{user_id}/wishlist', 'UsersController@wishList');
+            $api->put('/{user_id}/update', 'UsersController@update');
             $api->post('/', 'UsersController@store');
         });
     });
@@ -77,13 +77,13 @@ $api->version('v1', ['prefix' => 'api/v1', 'namespace' => 'Api\v1\Controllers'],
             $api->get('/profile/{user_id}', 'UsersController@profile');
             $api->put('/profile/update', 'UsersController@updateProfile');
             $api->put('/change-password', 'UsersController@profile');
-            $api->get('/cart-items/{user_id}', 'CartsController@index');
+            $api->get('/cart-items', 'CartsController@index');
             $api->post('/cart-items/add', 'CartsController@store');
             $api->delete('/cart-items/remove/{id}', 'CartsController@removeFromCart');
-            $api->get('/wish-list/{user_id}', 'WishListsController@index');
+            $api->get('/wish-list', 'WishListsController@index');
             $api->post('/wish-list', 'WishListsController@store');
             $api->post('/orders', 'OrdersController@createOrder');
-            $api->get('/orders/{user_id}', 'OrdersController@getUserOrders');
+            $api->get('/orders', 'OrdersController@getUserOrders');
             $api->post('/review','ProductsController@productReview');
         });
 
@@ -97,7 +97,7 @@ $api->version('v1', ['prefix' => 'api/v1', 'namespace' => 'Api\v1\Controllers'],
 
         $api->get('/categories', 'CategoriesController@index');
         $api->get('/category/{category_id}', 'CategoriesController@show');
-        $api->get('/category/sub-category/{category_id}', 'CategoriesController@subCategory');
+        $api->get('/category/{category_id}/sub-category', 'CategoriesController@subCategory');
 
         /************************
          * PRODUCTS ENDPOINT
