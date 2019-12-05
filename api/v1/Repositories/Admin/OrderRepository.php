@@ -28,7 +28,7 @@ class OrderRepository extends BaseRepository
 
     public function getUserOrderItems($id)
     {
-        $orderItems = $this->order->where('user_id',$id)->get();
+        $orderItems = $this->order->where('user_id', $id)->get();
 
         return fractal($orderItems, $this->orderTransformer);
     }
@@ -49,4 +49,52 @@ class OrderRepository extends BaseRepository
             ]
         );
     }
+
+    public function cancelOrder($order_id)
+    {
+        $order = $this->order_ > findOrFail($order_id);
+
+        if ($order->update(['status' => 'cancelled'])) {
+            
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Order cancel successfully'
+            ], 200);
+        }
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Fail to cancel order'
+        ]);
+    }
+
+    public function shipOrder($order_id, $shipping_details)
+    {
+        //TODO algorithm to ship product
+    }
+
+    public function deliverOrder($order_id)
+    {
+        $order = $this->order_ > findOrFail($order_id);
+
+        if ($order->update(['status' => 'delivered'])) {
+
+             //created an order history
+             $order->history()->create([
+                'comment' => 'rder has been delivered ',
+                'user_id' => auth()->user()->id
+            ]);
+
+            
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Your order has been delivered successfully'
+            ], 200);
+        }
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Fail to cancel order'
+        ]);
+    }
+
+    
 }

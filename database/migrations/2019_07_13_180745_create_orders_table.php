@@ -19,9 +19,9 @@ class CreateOrdersTable extends Migration
             $table->uuid('product_id');
             $table->double('price');
             $table->unsignedInteger('quantity');
-            $table->enum('status',['paid','not-paid'])->default('not-paid');
+            $table->enum('payment_status',['paid','not-paid'])->default('not-paid');
             $table->enum('payment_type',['online','shop'])->default('shop');
-            $table->boolean("delivered")->default(false);
+            $table->enum("status",['pending','cancelled','shipped','delivered','recieved'])->default('pending');
             $table->timestamps();
             
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

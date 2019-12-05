@@ -25,4 +25,16 @@ class OrdersController extends BaseController
     {
         return $this->orderRepository->createOrder($request->all());
     }
+
+    /**
+     * User can Cancel order
+     *
+     * @param Request $request
+     * @param [type] $order_id
+     * @return void
+     */
+    public function cancelOrder(Request $request,$order_id)
+    {
+        return $this->orderRepository->cancelOrder($order_id);
+    }
 }

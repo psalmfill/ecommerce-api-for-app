@@ -7,7 +7,9 @@ use Api\BaseRepository;
 use App\User;
 use App\Order;
 use Api\v1\Transformers\OrderTransformer;
+use App\Notifications\OrderCancelled;
 use App\Notifications\OrderCompleted;
+use Illuminate\Http\Response;
 
 class OrderRepository extends BaseRepository
 {
@@ -57,6 +59,13 @@ class OrderRepository extends BaseRepository
                 $pro = $this->product->find($product->id);
                 $pro->stock = $pro->stock - $product->quantity;
                 $pro->save();
+
+                //Created order history
+                $order->history()->create([
+                    'comment' => 'New order created',
+                    'user_id' => auth()->user()->id
+                ]);
+
                 auth()->user()->notify(new OrderCompleted($order));
       
             }
@@ -67,5 +76,38 @@ class OrderRepository extends BaseRepository
                 'message' => 'order completed'
             ]
         );
+    }
+
+    public function cancelOrder($order_id)
+    {
+        $order = $this->order_>findOrFail($order_id);
+        if($order->user_id === auth()->user()->id)
+        {
+            
+            if($order->update(['status'=>'cancelled']))
+            {
+                //created an order history
+                $order->history()->create([
+                    'comment' => 'order was cancelled',
+                    'user_id' => auth()->user()->id
+                ]);
+
+                auth()->user()->notify(new OrderCancelled($order));
+
+
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Order cancel successfully'
+                ],200);
+            }
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Fail to cancel order'
+            ]);
+        }
+        return response()->json([
+            'status'=> 'error',
+            'message' => 'You don\'t have the permission to cancel this order'
+        ],Response::HTTP_FORBIDDEN);
     }
 }

@@ -46,4 +46,9 @@ class Order extends Model
     {
         return $this->price * $this->quantity;
     }
+
+    public function history()
+    {
+        return $this->morphMany(History::class,'historable');
+    }
 }
