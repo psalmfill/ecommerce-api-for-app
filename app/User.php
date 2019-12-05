@@ -8,6 +8,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Traits\UseUuid;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
@@ -143,5 +144,15 @@ class User extends Authenticatable implements JWTSubject
             }
         }
         return false;
+    }
+
+    public function getFullNameAttribute()
+    {
+        return trim($this->first_name .' '.$this->last_name . ' '. $this->middle_name);
+    }
+
+    public function getAvatarAttribute()
+    {
+        return asset(Storage::url($this->photo));
     }
 }

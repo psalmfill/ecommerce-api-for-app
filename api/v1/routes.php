@@ -74,8 +74,9 @@ $api->group(['prefix' => 'admin', 'namespace' => 'Admin','middleware'=>'admin'],
         $api->post('/register', 'AuthController@register');
         $api->post('/login', 'AuthController@login');
         $api->group(['prefix' => 'user','middleware'=>'auth.api'], function ($api) {
-            $api->get('/profile/{user_id}', 'UsersController@profile');
+            $api->get('/profile', 'UsersController@profile');
             $api->put('/profile/update', 'UsersController@updateProfile');
+            $api->post('/profile/update-photo','UsersController@uploadPhoto');
             $api->put('/change-password', 'UsersController@profile');
             $api->get('/cart-items', 'CartsController@index');
             $api->post('/cart-items/add', 'CartsController@store');
