@@ -146,13 +146,53 @@ class User extends Authenticatable implements JWTSubject
         return false;
     }
 
+    /**
+     * Get the transformed user item
+     *
+     * @return void
+     */
     public function getFullNameAttribute()
     {
         return trim($this->first_name .' '.$this->last_name . ' '. $this->middle_name);
     }
 
+    /**
+     * Get the transform user url to image
+     *
+     * @return void
+     */
     public function getAvatarAttribute()
     {
         return asset(Storage::url($this->photo));
+    }
+
+    /**
+     * Get user country
+     *
+     * @return Relationship
+     */
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
+    }
+    
+    /**
+     * Get user state
+     *
+     * @return Relationship
+     */
+    public function state()
+    {
+        return $this->belongsTo(State::class);
+    }
+
+    /**
+     * get user city
+     *
+     * @return Relationship
+     */
+    public function city()
+    {
+        return $this->belongsTo(City::class);
     }
 }

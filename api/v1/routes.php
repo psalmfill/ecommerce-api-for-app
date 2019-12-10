@@ -12,9 +12,9 @@ $api->version('v1', ['prefix' => 'api/v1', 'namespace' => 'Api\v1\Controllers'],
 
 $api->group(['prefix' => 'admin', 'namespace' => 'Admin','middleware'=>'admin'], function ($api) {
 
-        $api->get('/login', 'AdminController@login');
-        $api->put('/update-profile', 'AdminController@updateProfile');
-        $api->put('/change-password', 'AdminController@changePassword');
+        // $api->get('/login', 'AdminController@login');
+        // $api->put('/update-profile', 'AdminController@updateProfile');
+        // $api->put('/change-password', 'AdminController@changePassword');
 
         /***********
          * PRODUCTS
@@ -63,6 +63,9 @@ $api->group(['prefix' => 'admin', 'namespace' => 'Admin','middleware'=>'admin'],
             $api->put('/{user_id}/update', 'UsersController@update');
             $api->post('/', 'UsersController@store');
         });
+        $api->get('/country/{country_id}/users','UsersController@getUsersByCountry');
+        $api->get('/state/{state_id}/users','UsersController@getUsersByState');
+        $api->get('/city/{city_id}/users','UsersController@getUsersByCity');
     });
 
     $api->group(['namespace' => 'User'], function ($api) {
@@ -107,6 +110,16 @@ $api->group(['prefix' => 'admin', 'namespace' => 'Admin','middleware'=>'admin'],
             $api->get('/{product_id}', 'ProductsController@show');
             $api->get('/category/{category_id}','CategoriesController@index');
         });
+
+        /*************************************
+         * LOCATION ENDPOINT
+         *************************************/
+
+         $api->group(['prefix' => 'location'], function ($api) {
+            $api->get('/countries','LocationController@getCountries');
+            $api->get('/countries/{country_id}/states','LocationController@getStates');
+            $api->get('/states/{state_id}/cities','LocationController@getCities');
+         });
 
 
         /****************

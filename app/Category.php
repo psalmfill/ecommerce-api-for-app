@@ -37,17 +37,18 @@ class Category extends Model
         return $this->hasMany(Category::class, 'parent_id', 'id');
     }
 
-    public function parent(){
-        return $this->belongsTo(Category::class,'parent_id');
+    public function parent()
+    {
+        return $this->belongsTo(Category::class, 'parent_id');
     }
 
     public function scopeNoSubCategories($query)
     {
-        return $query->where('parent_id',null)->get();
+        return $query->where('parent_id', null)->get();
     }
 
-    public function scopeSubCategories($query,$category_id)
+    public function scopeSubCategories($query, $category_id)
     {
-        return $query->where('parent_id',$category_id)->get();
+        return $query->where('parent_id', $category_id)->get();
     }
 }
