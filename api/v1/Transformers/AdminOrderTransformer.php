@@ -5,7 +5,7 @@ namespace Api\v1\Transformers;
 use League\Fractal\TransformerAbstract;
 use App\Order;
 
-class OrderTransformer extends TransformerAbstract
+class AdminOrderTransformer extends TransformerAbstract
 {
 
     public function transform(Order $order)
@@ -19,7 +19,9 @@ class OrderTransformer extends TransformerAbstract
             "status" => $order->status,
             "payment_type" => $order->status === 'paid'? $order->payment_type: null,
             "delivered" => $order->delivered?'yes':'no',
-            "created" => ($order->created_at)
+            "created" => ($order->created_at),
+            'user' => fractal($order->user, new UserTransformer)
         ];
     }
+    
 }

@@ -50,6 +50,14 @@ class OrderRepository extends BaseRepository
         );
     }
 
+    public function getOrder($orderId)
+    {
+        $order = $this->order->findOrFail($orderId);
+        
+        return fractal($order, $this->orderTransformer);
+
+    }
+
     public function cancelOrder($order_id)
     {
         $order = $this->order_ > findOrFail($order_id);

@@ -96,9 +96,8 @@ $api->group(['prefix' => 'admin', 'namespace' => 'Admin','middleware'=>'admin'],
          * CATEGORY ENDPOINTS
          ********************/
 
-        $api->get('/categories', 'CategoriesController@index');
-        $api->get('/category/{category_id}', 'CategoriesController@show');
-        $api->get('/category/{category_id}/sub-category', 'CategoriesController@subCategory');
+        $api->get('/categories', 'CategoriesController@getAll');
+        $api->get('/categories/{category_id}', 'CategoriesController@show');
 
         /************************
          * PRODUCTS ENDPOINT

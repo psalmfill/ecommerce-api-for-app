@@ -61,13 +61,8 @@ class ProductRepository extends BaseRepository
             if (isset($images)) {
 
                 $paths = $this->uploadMultipleFiles('products', $images);
-                $allPaths = [];
-                foreach ($paths as $path) {
-                    array_push($allPaths, [
-                        'url' => $path
-                    ]);
-                }
-                $product->images()->createMany($allPaths);
+
+                $product->images()->createMany($this->formatImageArrayForStorage($paths));
             }
             return $this->response->item($product, new $this->productTransformer);
         }
@@ -84,20 +79,44 @@ class ProductRepository extends BaseRepository
 
         $product->slug = $this->createSlug($this->product, $data['name'], $id);
         $product->old_price = $product->price;
-        if ($product->update($data))
+        $oldImages = $product->images;
+        $newImages = $data['images'];
+        unset($data['images']);
+        if ($product->update($data)) {
+            if (isset($newImages)) {
+                foreach ($oldImages as $image) {
+                    $this->removeFile($image->url);
+                }
+                $paths = $this->uploadMultipleFiles('products', $newImages);
+
+                $product->images()->createMany($this->formatImageArrayForStorage($paths));
+            }
             return $this->response->item($product, new $this->productTransformer);
+        }
+        return  $this->response->error('Failed Updating Product', Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 
     public function delete($id)
     {
         $productImages = $this->product->findOrFail($id)->images;
-        if ($this->product->destroy($id))
+        if ($this->product->destroy($id)) {
 
             foreach ($productImages as $image) {
                 $this->removeFile($image->url);
             }
-        return $this->response->error('Success Deleting Product', Response::HTTP_OK);
-
+            return $this->response->error('Success Deleting Product', Response::HTTP_OK);
+        }
         return  $this->response->error('Failed Deleting Product', Response::HTTP_INTERNAL_SERVER_ERROR);
+    }
+
+    private function formatImageArrayForStorage($paths)
+    {
+        $allPaths = [];
+        foreach ($paths as $path) {
+            array_push($allPaths, [
+                'url' => $path
+            ]);
+        }
+        return $allPaths;
     }
 }

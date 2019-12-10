@@ -40,4 +40,14 @@ class Category extends Model
     public function parent(){
         return $this->belongsTo(Category::class,'parent_id');
     }
+
+    public function scopeNoSubCategories($query)
+    {
+        return $query->where('parent_id',null)->get();
+    }
+
+    public function scopeSubCategories($query,$category_id)
+    {
+        return $query->where('parent_id',$category_id)->get();
+    }
 }
