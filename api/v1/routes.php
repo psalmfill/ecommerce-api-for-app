@@ -50,6 +50,17 @@ $api->group(['prefix' => 'admin', 'namespace' => 'Admin','middleware'=>'admin'],
             $api->post('/', 'RolesController@store');
         });
 
+         /************
+         * Purchase Coupon
+         ***********/
+        $api->group(['prefix' => 'coupons'], function ($api) {
+            $api->get('/', 'CouponsController@index');
+            $api->get('/{coupons_id}', 'CouponsController@show');
+            $api->delete('/{coupons_id}', 'CouponsController@destroy');
+            $api->put('/update/{coupons_id}', 'CouponsController@update');
+            $api->post('/', 'CouponsController@store');
+        });
+
         /***********
          * USERS
          ***********/

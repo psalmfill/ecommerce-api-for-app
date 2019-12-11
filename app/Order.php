@@ -51,4 +51,9 @@ class Order extends Model
     {
         return $this->morphMany(History::class,'historable');
     }
+
+    public function coupon()
+    {
+        return $this->belongsTo(Coupon::class);
+    }
 }
