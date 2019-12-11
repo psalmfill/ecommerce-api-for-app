@@ -18,6 +18,7 @@ class ProductTransformer extends TransformerAbstract
             "description" => $product->description,
             "price" => $product->price,
             "discount" => $product->discount,
+            "discount_price" => $product->discount_price,
             'hasDiscount' => $product->discount != 0,
             'stock' => $product->stock,
             'images' => $this->formatImages($product->images),

@@ -80,4 +80,14 @@ class Product extends Model
     {
         return $this->hasMany(Review::class);
     }
+
+    public function scopeDiscounted($query)
+    {
+        return $query->where('discount','<>',0);
+    }
+    
+    public function getDiscountPriceAttribute()
+    {
+        return $this->price - (($this->discount * $this->price)/100); 
+    }
 }

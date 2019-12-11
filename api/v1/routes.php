@@ -118,6 +118,7 @@ $api->group(['prefix' => 'admin', 'namespace' => 'Admin','middleware'=>'admin'],
          ************************/
         $api->group(['prefix' => 'products'], function ($api) {
             $api->get('/', 'ProductsController@index');
+            $api->get('/discounted','ProductsController@getDiscountedProducts');
             $api->get('/{product_id}', 'ProductsController@show');
             $api->get('/category/{category_id}','CategoriesController@index');
         });

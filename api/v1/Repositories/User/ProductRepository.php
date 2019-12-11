@@ -45,7 +45,7 @@ class ProductRepository extends BaseRepository
         if ($sort && ($sort == 'price' || $sort == 'name'))
             $products = $products->orderBy($sort, $dir);
 
-        $products = $products->paginate(15);
+        $products = $products->paginate(20);
         return $this->response->paginator($products, $this->productTransformer);
     }
 
@@ -64,7 +64,7 @@ class ProductRepository extends BaseRepository
             $products = $products->orderBy($sort, $dir);
 
 
-        $products = $products->paginate(12);
+        $products = $products->paginate(20);
 
         return $this->response->paginator($products, $this->productTransformer)->addMeta('status_code', Response::HTTP_OK);
     }
@@ -86,5 +86,19 @@ class ProductRepository extends BaseRepository
 
         if ($review->save())
             return $this->response->item($review, new ReviewTransformer());
+    }
+
+    public function getDiscountedProducts()
+    {
+        $products = $this->product->query();
+        $products = $this->product->discounted();
+        $sort = request('sort_by');
+        $dir = request('order');
+        if ($sort && ($sort == 'price' || $sort == 'name'))
+            $products = $products->orderBy($sort, $dir);
+            
+        $products = $products->paginate(20);
+
+        return $this->response->paginator($products, $this->productTransformer)->addMeta('status_code', Response::HTTP_OK);
     }
 }

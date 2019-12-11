@@ -43,4 +43,13 @@ class ProductsController extends BaseController
         return $this->productRepository->productReview( $request->all());
 
     }
+    /**
+     * Get all product that has been
+     *
+     * @return void
+     */
+    public function getDiscountedProducts()
+    {
+        return $this->productRepository->getDiscountedProducts();
+    }
 }
