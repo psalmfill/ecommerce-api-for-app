@@ -20,6 +20,9 @@ class UserTransformer extends TransformerAbstract
             'gender' => $user->gender,
             "email" => $user->email,
             "address" => $user->address,
+            "country" => $user->country,
+            "state" => $user->state,
+            "city" => $user->city,
             "created" => ($user->created_at)
         ];
     }

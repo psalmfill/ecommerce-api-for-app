@@ -27,7 +27,7 @@ class UserRepository extends BaseRepository
     {
         $user = auth()->user();
 
-        return fractal($user, $this->userTransformer);
+        return fractal($user,new $this->userTransformer);
     }
 
     /**
@@ -41,7 +41,7 @@ class UserRepository extends BaseRepository
     {
         $user = $this->user->find(auth()->user()->id);
         if ($user->update($data))
-            return fractal($user, $this->userTransformer);
+            return fractal($user, new $this->userTransformer);
 
         return response()->json([
             'status' => 'error',

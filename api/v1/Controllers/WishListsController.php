@@ -19,9 +19,9 @@ class WishListsController extends BaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id)
+    public function index()
     {
-        return $this->wishListRepository->getUserWishListItems($id);
+        return $this->wishListRepository->getUserWishListItems();
     }
 
     /**

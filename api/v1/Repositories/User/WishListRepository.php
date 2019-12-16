@@ -5,9 +5,9 @@ namespace Api\v1\Repositories\User;
 use App\Product;
 use App\Traits\GenarateSlug;
 use Api\BaseRepository;
+use Api\v1\Transformers\ProductTransformer;
 use App\User;
 use App\WishList;
-use Api\v1\Transformers\WishListTransformer;
 
 class WishListRepository extends BaseRepository
 {
@@ -20,7 +20,7 @@ class WishListRepository extends BaseRepository
 
     protected $productTransformer;
 
-    public function __construct(User $user, WishList $wishList, WishListTransformer $productTransformer)
+    public function __construct(User $user, WishList $wishList, ProductTransformer $productTransformer)
     {
         $this->wishList = $wishList;
         $this->user = $user;
@@ -28,33 +28,36 @@ class WishListRepository extends BaseRepository
         $this->productTransformer = $productTransformer;
     }
 
-    public function getUserWishListItems($id)
+    public function getUserWishListItems()
     {
-        $wishListItems = $this->wishList->where('user_id', $id)->get();
+        $wishListItems = auth()->user()->wishListItems;
+        return $wishListItems;
 
-        return fractal($wishListItems, $this->productTransformer);
+        return $this->response->collection($wishListItems, $this->productTransformer);
     }
 
     public function addToWishList($data)
     {
         $wishList = $this->wishList->where([
-            ['user_id', $data->user_id],
+            ['user_id', auth()->user()->id],
             ['product_id', $data->product_id],
         ])->first();
 
         if ($wishList) {
-            return   $this->removeFromWishList($wishList->id);
+            if (auth()->user()->wishListItems()->detach($data->product_id)) //$this->removeFromWishList($wishList->id);
+                return response()->json(
+                    [
+                        'status' => 'success',
+                        'message' => 'Success removing from wishList'
+                    ]
+                );
         }
-        $wishList = new $this->wishList($data->all());
-        // $wishList->product_id = $data->product_id;
-        // $wishList->user_id = $data->user_id;
 
-        if ($wishList->save())
-            return fractal($wishList, $this->productTransformer);
+        auth()->user()->wishListItems()->attach($data->product_id);
         return response()->json(
             [
-                'status' => 'error',
-                'message' => 'Failed adding to wishList'
+                'status' => 'success',
+                'message' => 'Success adding item to wishList'
             ]
         );
     }

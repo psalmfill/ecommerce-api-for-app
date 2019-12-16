@@ -14,7 +14,6 @@ class CreateWishListsTable extends Migration
     public function up()
     {
         Schema::create('wish_lists', function (Blueprint $table) {
-            $table->uuid('id')->primary();
             $table->uuid('user_id');
             $table->uuid('product_id');
             $table->timestamps();

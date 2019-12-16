@@ -6,6 +6,7 @@ use Api\BaseRepository;
 use App\City;
 use App\Country;
 use App\State;
+use Illuminate\Http\Response;
 
 class LocationRepository extends BaseRepository
 {
@@ -24,17 +25,22 @@ class LocationRepository extends BaseRepository
 
     public function getCountries()
     {
-        return $this->country->all();
+        $data = $this->country->all();
+        return response()->json(compact('data'),Response::HTTP_ACCEPTED);
     }
 
     public function getStates($country_id)
     {
-        return $this->country->findOrFail($country_id)->states;
+        $data = $this->country->findOrFail($country_id)->states;
+        return response()->json(compact('data'),Response::HTTP_ACCEPTED);
+
     }
 
     public function getCities($state_id)
     {
-        return $this->state->findOrFail($state_id)->cities;
+        $data = $this->state->findOrFail($state_id)->cities;
+        return response()->json(compact('data'),Response::HTTP_ACCEPTED);
+
     }
 
 
